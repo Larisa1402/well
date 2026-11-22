@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a120c">
+<title>WESHALLWIN CLAN — Command Center</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+:root{--bg:#1a120c;--panel:#2a1d13;--panel2:#33241a;--line:#5a4029;--light:#d9b887;--dark:#8b5a33;--text:#f0e5d2;--muted:#b19a7d;--ok:#a3c28f}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}
+.app{max-width:760px;margin:0 auto;padding:22px 14px 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.eyebrow{font:700 9px Orbitron;letter-spacing:2px;color:var(--light)}.top-title{font:800 clamp(16px,4vw,22px) Orbitron;margin-top:6px}
+.pill{font-size:10px;border:1px solid var(--line);border-radius:30px;padding:8px 12px;background:var(--panel);color:var(--muted);white-space:nowrap}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:6px}
+.hero{border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px;background:repeating-conic-gradient(#c9a574 0 25%,#7d5030 0 50%) 0 0/88px 88px}
+.hero-content{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:clamp(18px,4vw,30px)}
+.kicker{font:700 9px Orbitron;letter-spacing:3px;color:var(--light)}
+.hero h1{font:800 clamp(26px,7vw,42px) Orbitron;line-height:1.15;margin:12px 0;color:var(--text)}
+.hero p{color:#cdbda5;font-size:12px;line-height:1.7;margin:0;max-width:520px}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}.tag{border:1px solid var(--line);border-radius:20px;padding:6px 10px;font-size:9px;color:var(--light);background:var(--panel)}
+.cta{display:inline-block;margin-top:18px;padding:12px 16px;border-radius:10px;background:var(--light);color:#2a1d13;font:800 9px Orbitron;letter-spacing:1px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.panel{min-width:0;border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:16px}
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.title{font:700 11px Orbitron;letter-spacing:1.1px;text-transform:uppercase}.title i{font-style:normal;color:var(--light);margin-right:8px}
+.kick{font:600 8px Inter;letter-spacing:1.4px;color:var(--muted);margin-top:6px}.sub{font-size:9px;color:var(--muted);text-align:right}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--light);padding:8px 11px;border-radius:9px;font-size:10px;cursor:pointer}
+.gold{border:0;border-radius:9px;padding:11px 13px;background:var(--light);color:#2a1d13;font:800 9px Orbitron;cursor:pointer}
+.empty{font-size:10px;color:var(--muted);padding:16px;text-align:center;border:1px dashed var(--line);border-radius:12px;line-height:1.6}
+.empty button{margin-top:8px}
+.intel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.stat{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);min-width:0}
+.stat small{display:block;color:var(--muted);font:700 8px Orbitron;letter-spacing:.8px}
+.stat strong{display:block;font:800 clamp(17px,3vw,24px) Orbitron;color:var(--light);margin:8px 0 3px}.stat em{font-size:9px;color:var(--muted);font-style:normal}
+.leaders{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.leader{display:flex;align-items:center;gap:11px;padding:12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);min-width:0}
+.leader img{width:52px;height:52px;object-fit:cover;border-radius:50%;border:2px solid var(--light);background:#3d2b1d}
+.role{font:700 8px Orbitron;letter-spacing:1.3px;color:var(--light);text-transform:uppercase}.leader b{display:block;font-size:13px;margin:5px 0;overflow-wrap:anywhere}.leader a{font-size:9px;color:var(--muted);text-decoration:underline}
+.tools{display:flex;gap:8px;margin-bottom:12px}
+.tools input,.tools select,.clock-search input{width:100%;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 11px;color:var(--text);font-size:11px;outline:none}
+.tools select{max-width:135px}
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:300px;overflow:auto}
+.person{display:flex;align-items:center;gap:8px;padding:9px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);min-width:0}
+.avatar{width:29px;height:29px;flex:0 0 29px;border-radius:50%;display:grid;place-items:center;background:var(--dark);color:var(--text);font:800 11px Orbitron}
+.person b{font-size:10px;overflow-wrap:anywhere}.person small{display:block;font-size:8px;color:var(--muted);margin-top:3px}
+.list{display:grid;gap:8px}
+.row{display:flex;align-items:center;gap:11px;padding:10px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);min-width:0}
+.row img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid var(--light);background:#3d2b1d}
+.row .info{flex:1;min-width:0}.row b{font-size:11px;display:block;overflow-wrap:anywhere}.row small{font-size:9px;color:var(--muted);display:block;margin-top:4px}
+.rating{font-size:9px;color:var(--light);border:1px solid var(--line);border-radius:20px;padding:5px 8px;white-space:nowrap}
+.badge{display:inline-block;font:800 8px Orbitron;padding:4px 6px;border-radius:5px;background:var(--dark);color:var(--text);margin-bottom:5px}
+.bar{height:8px;background:var(--bg);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.fill{height:100%;width:0;background:var(--light);border-radius:20px;transition:width .6s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin:8px 0 14px}
+.stage{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);margin-bottom:8px}
+.node{width:22px;height:22px;flex:0 0 22px;border-radius:50%;display:grid;place-items:center;font-size:10px;border:1px solid var(--muted);color:var(--muted)}
+.stage.done .node{background:var(--ok);color:#1a2314;border-color:var(--ok)}
+.stage.active{border-color:var(--light)}.stage.active .node{border-color:var(--light);color:var(--light)}
+.stage.locked{opacity:.5}.stage b{font-size:10px;flex:1}.stage small{font-size:8px;color:var(--muted);letter-spacing:1px}
+.nav2{display:flex;gap:7px;align-items:center}.nav2 button{width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer}.nav2 span{font:700 9px Orbitron;color:var(--light)}
+.dojo{display:flex;align-items:center;justify-content:space-around;gap:14px;padding:6px 0}
+.ring{width:140px;height:140px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--dark);background:var(--bg)}
+.ring b{font:800 28px Orbitron;color:var(--light)}.ring small{font-size:7px;letter-spacing:1px;color:var(--muted);margin-top:6px;text-align:center}
+.presets{display:grid;gap:7px}.presets button{border:1px solid var(--line);background:var(--panel2);border-radius:8px;padding:8px 12px;color:var(--muted);font:700 8px Orbitron;cursor:pointer}.presets button.sel{border-color:var(--light);color:var(--light)}
+.ctrl{display:flex;gap:8px;margin:12px 0}.ctrl .gold{flex:1}
+.checks{display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--line)}.checks label{display:flex;align-items:center;gap:8px;color:#cdbda5;font-size:10px}.checks input{accent-color:var(--light)}
+.openings{display:grid;gap:7px;max-height:320px;overflow:auto}
+.opening{padding:10px 11px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.opening b{display:block;font-size:10px;color:var(--light)}.opening small{display:block;color:var(--muted);font-size:8px;margin-top:4px}
+.line{font:600 9px ui-monospace,monospace;color:#cdbda5;text-align:right;max-width:150px}
+.opening button{grid-column:2;justify-self:end;border:1px solid var(--line);background:transparent;border-radius:6px;color:var(--light);font-size:8px;padding:5px 7px;cursor:pointer}
+.trophies{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.trophy{padding:13px 8px 11px;text-align:center;border:1px solid var(--line);border-radius:12px;background:var(--panel2);min-width:0}
+.trophy.on{border-color:var(--light)}.trophy .sym{font-size:24px;filter:grayscale(1);opacity:.4}.trophy.on .sym{filter:none;opacity:1}
+.trophy b{display:block;font:700 8px Orbitron;color:var(--light);margin:7px 0 4px}.trophy small{display:block;font-size:8px;color:var(--muted)}.trophy em{display:block;font-size:7px;color:var(--muted);margin-top:7px;font-style:normal;letter-spacing:1px}
+.clock-search{display:flex;gap:7px}.clock-search button{border:0;border-radius:9px;padding:0 14px;background:var(--dark);color:var(--text);cursor:pointer}
+.place{font-size:11px;color:var(--light);margin-top:13px}.time{font:800 clamp(22px,5vw,32px) Orbitron;letter-spacing:2px;margin:7px 0}.date{font-size:10px;color:var(--muted)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.cal-head b{font:700 10px Orbitron}.cal-head button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:7px;width:26px;height:26px;cursor:pointer}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.cal span{font-size:8px;color:var(--muted);padding:5px 0}
+.day{font-size:10px;padding:8px 0;border-radius:6px;background:var(--dark);border:0;color:var(--text);cursor:pointer}.day:nth-child(odd){background:#a87a4a}
+.day.today{background:var(--light);color:#2a1d13;font-weight:700}.day.sel{outline:2px solid var(--text)}
+.note{font-size:9px;color:var(--muted);margin-top:10px}
+.principle{display:flex;align-items:center;gap:11px;padding:10px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);margin-bottom:8px}
+.principle:last-child{margin-bottom:0}.principle b{font-size:10px;display:block}.principle small{font-size:9px;color:var(--muted)}
+.footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:9px;padding:20px 2px 0}.footer strong{color:var(--light);font-family:Orbitron;letter-spacing:1px}
+.toast{position:fixed;bottom:18px;right:18px;padding:11px 15px;border:1px solid var(--light);border-radius:10px;background:var(--panel);color:var(--text);font-size:10px;opacity:0;transform:translateY(10px);transition:.25s;z-index:99;pointer-events:none}.toast.show{opacity:1;transform:none}
+@media(max-width:560px){.intel{grid-template-columns:repeat(2,minmax(0,1fr))}.leaders,.results{grid-template-columns:1fr}.trophies{grid-template-columns:repeat(2,minmax(0,1fr))}.pill.hide-sm{display:none}.dojo{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="app" id="home">
+  <header class="topbar">
+    <div><div class="eyebrow">CHESS.COM CLUB / COMMAND CENTER</div><div class="top-title">WESHALLWIN CLAN</div></div>
+<div style="display:flex;gap:8px"><div class="pill hide-sm"><i class="dot"></i>ONLINE</div><div class="pill" id="todayPill">—</div></div>
+  </header>
+
+ <section class="hero"><div class="hero-content">
+<div class="kicker">THE NEXT MOVE BELONGS TO YOU</div>
+    <h1>WE SHALL<br>WIN TOGETHER.</h1>
+    <p>Welcome to the command deck of WESHALLWIN CLAN. A living network for determined players—built around strategy, shared progress, and the beautiful art of the game.</p>
+    <div class="tags"><span class="tag">♞ STRATEGY FIRST</span><span class="tag">✦ CLAN POWERED</span><span class="tag">⚡ BUILT TO IMPROVE</span></div>
+    <a class="cta" href="#directory">EXPLORE THE PLAYERS ↗</a>
+  </div></section>
+
+  <div class="grid">
+<section class="panel" id="intelligence">
+      <div class="head"><div><div class="title"><i>◈</i>Club Intelligence</div><div class="kick">LIVE SIGNALS FROM THE CHESS.COM CLUB</div></div><span class="sub"><i class="dot"></i><span id="intelStatus">SYNCING</span><br><span id="lastSync">—</span></span></div>
+      <div class="intel">
+<div class="stat"><small>MEMBERS</small><strong id="intelMembers">—</strong><em>Club profile</em></div>
+        <div class="stat"><small>WEEKLY</small><strong id="intelWeekly">—</strong><em>Weekly list</em></div>
+        <div class="stat"><small>MONTHLY</small><strong id="intelMonthly">—</strong><em>Monthly list</em></div>
+        <div class="stat"><small>ALL-TIME</small><strong id="intelAllTime">—</strong><em>All-time list</em></div>
+      </div>
+    </section>
+ <section class="panel">
+      <div class="head"><div class="title"><i>♛</i>Clan Leadership</div><span class="sub">OFFICIAL PROFILES</span></div>
+      <div class="leaders">
+<div class="leader"><img id="owner-img" alt="Owner avatar" src="https://www.chess.com/bundles/web/images/noavatar_l.png"><div><div class="role">♛ Owner</div><b>weshallwin</b><a id="owner-link" href="https://www.chess.com/member/weshallwin" target="_blank" rel="noopener">Chess.com profile ↗</a></div></div>
+        <div class="leader"><img id="admin-img" alt="Super Admin avatar" src="https://www.chess.com/bundles/web/images/noavatar_l.png"><div><div class="role">✦ Super Admin</div><b>VolchitsaX</b><a id="admin-link" href="https://www.chess.com/member/VolchitsaX" target="_blank" rel="noopener">Chess.com profile ↗</a></div></div>
+      </div>
+      <div style="margin-top:12px"><a class="btn" href="https://www.chess.com/club/weshallwin-clan" target="_blank" rel="noopener">Open the club on Chess.com ↗</a></div>
+    </section>
+<section class="panel" id="roadmap">
+      <div class="head"><div class="title"><i>⌁</i>Clan Roadmap</div><div class="nav2"><button id="prevTier" aria-label="Previous tier">‹</button><span id="tierLabel">TIER 1</span><button id="nextTier" aria-label="Next tier">›</button></div></div>
+      <div class="bar"><div class="fill" id="tierFill"></div></div>
+      <div class="meta"><span id="progressCaption">Loading club progress…</span><span id="progressPct">0%</span></div>
+      <div id="milestoneMap"><div class="empty">Connecting to club records…</div></div>
+    </section>
+<section class="panel" id="directory">
+      <div class="head"><div><div class="title"><i>◎</i>Player Observatory</div><div class="kick">SEARCH THE CLUB MEMBER RECORDS</div></div><span class="sub" id="directoryCount">0 RECORDS</span></div>
+<div class="tools"><input id="directorySearch" type="search" placeholder="Find a player by username…"><select id="directoryFilter" aria-label="Filter"><option value="all">All records</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="all-time">All-time</option></select></div>
+      <div class="results" id="directoryResults"><div class="empty" style="grid-column:1/-1">Loading the player observatory…</div></div>
+    </section>
+<section class="panel" id="members">
+      <div class="head"><div class="title"><i>✦</i>Newest Members</div><span class="sub">LATEST ARRIVALS</span></div>
+      <div class="list" id="membersList"><div class="empty">Retrieving the latest clan members…</div></div>
+    </section>
+<section class="panel" id="titled">
+      <div class="head"><div class="title"><i>♜</i>Titled Players</div><span class="sub">GM · IM · FM · CM · WOMEN’S TITLES</span></div>
+      <div class="meta" style="margin-top:0"><span>Titled found: <b id="titledCount">—</b></span><span id="titledProgText">—</span></div>
+      <div class="bar" style="margin-bottom:14px"><div class="fill" id="titledFill"></div></div>
+<div class="list" id="titledPlayers"><div class="empty">Scanning titled-player records…</div></div>
+    </section>
+<section class="panel" id="dojo">
+      <div class="head"><div><div class="title"><i>⌖</i>Training Dojo</div><div class="kick">FOCUS IS A SUPERPOWER</div></div><span class="sub">SESSION TIMER</span></div>
+      <div class="dojo"><div class="ring"><b id="dojoTime">15:00</b><small id="dojoState">READY WHEN YOU ARE</small></div>
+      <div class="presets"><button type="button" data-minutes="10">10 MIN</button><button type="button" class="sel" data-minutes="15">15 MIN</button><button type="button" data-minutes="25">25 MIN</button></div></div>
+      <div class="ctrl"><button class="gold" id="dojoStart" type="button">▶ START SESSION</button><button class="btn" id="dojoReset" type="button">↺ RESET</button></div>
+      <div class="checks"><label><input type="checkbox" data-task="calm"> Take a breath and settle in</label><label><input type="checkbox" data-task="tactics"> Solve a few tactical positions</label><label><input type="checkbox" data-task="review"> Review one game or key moment</label></div>
+      <div class="note" id="dojoNote">Small, consistent sessions build stronger habits.</div>
+    </section>
+<section class="panel" id="codex">
+      <div class="head"><div><div class="title"><i>▤</i>Opening Codex</div><div class="kick">CLASSIC STARTING SYSTEMS</div></div><span class="sub">REFERENCE</span></div>
+      <div class="tools"><input id="openingSearch" type="search" placeholder="Search openings…"><select id="openingSide"><option value="all">All systems</option><option value="white">White</option><option value="black">Black</option></select></div>
+      <div class="openings" id="openingList"></div>
+    </section>
+<section class="panel" id="trophies">
+      <div class="head"><div><div class="title"><i>✧</i>Hall of Honour</div><div class="kick">MILESTONES THE CLAN UNLOCKS TOGETHER</div></div><span class="sub">ACHIEVEMENTS</span></div>
+      <div class="trophies" id="trophyGrid"></div>
+    </section>
+<section class="panel" id="cosmic">
+      <div class="head"><div class="title"><i>◉</i>World Clock</div><span class="sub">COSMIC TIMER</span></div>
+      <div class="clock-search"><input id="placeInput" placeholder="Search a city or country…" value="Kolkata"><button id="searchBtn" aria-label="Search">⌕</button></div>
+      <div class="place" id="clockPlace">📍 Kolkata, India</div><div class="time" id="liveClock">--:--:--</div><div class="date" id="clockDate">Finding local time…</div>
+    </section>
+ <section class="panel" id="calendar">
+      <div class="head"><div class="title"><i>▦</i>Book of Days</div><span class="sub">CLAN CALENDAR</span></div>
+      <div class="cal-head"><button id="prevMonth" aria-label="Previous month">‹</button><b id="monthYear">—</b><button id="nextMonth" aria-label="Next month">›</button></div>
+      <div class="cal" id="calendarGrid"></div><div class="note" id="calendarNote">Select a date to mark your training day.</div>
+    </section>
+ <section class="panel">
+      <div class="head"><div class="title"><i>⚡</i>Clan Principles</div><span class="sub">THE STANDARD</span></div>
+<div class="principle"><span class="node" style="background:var(--ok);color:#1a2314;border-color:var(--ok)">✓</span><div><b>Respect every opponent</b><small>Good sportsmanship builds strong players.</small></div></div>
+      <div class="principle"><span class="node" style="background:var(--ok);color:#1a2314;border-color:var(--ok)">✓</span><div><b>Learn from every game</b><small>Review, reflect, and improve your ideas.</small></div></div>
+      <div class="principle"><span class="node" style="background:var(--ok);color:#1a2314;border-color:var(--ok)">✓</span><div><b>Help the clan rise</b><small>Share knowledge and make room for others.</small></div></div>
+    </section>
+</div>
+<footer class="footer"><span>© <span id="year"></span> WESHALLWIN CLAN</span><strong>PLAY · IMPROVE · WIN</strong><span>Chess.com public club API</span></footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const CLUB_SLUG="weshallwin-clan";
+const CLUB_API=`https://api.chess.com/pub/club/${CLUB_SLUG}`,MEMBERS_API=`${CLUB_API}/members`;
+const DEFAULT_AVATAR="https://www.chess.com/bundles/web/images/noavatar_l.png";
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(m){const e=$("toast");e.textContent=m;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2800)}
+/* Fetch with retry (Chess.com rate-limits bursts with HTTP 429) */
+async function getJSON(u,tries=3){
+  let last;
+  for(let i=0;i<tries;i++){
+    try{
+      const r=await fetch(u,{headers:{Accept:"application/json"}});
+      if(r.status===429||r.status>=500){last=new Error("HTTP "+r.status);await sleep(900*(i+1));continue}
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      return await r.json();
+    }catch(e){last=e;if(i<tries-1)await sleep(700*(i+1))}
+  }
+  throw last||new Error("Request failed");
+}
+const fmt=n=>n>=1000?(n/1000).toFixed(n%1000===0?0:1)+"K":n.toLocaleString();
+function timeAgo(ts){if(!ts)return"recently";const d=Math.floor(Date.now()/1000)-Number(ts);if(!Number.isFinite(d)||d<0)return"recently";if(d>=86400)return Math.floor(d/86400)+"d ago";if(d>=3600)return Math.floor(d/3600)+"h ago";if(d>=60)return Math.floor(d/60)+"m ago";return"just now"}
+function errBox(msg,e){return `<div class="empty" style="grid-column:1/-1">${msg}<br><small>(${esc(e&&e.message||"network error")})</small><br><button class="btn" type="button" onclick="refresh()">↻ Retry</button></div>`}
+/* The members list is fetched ONCE and shared by all three panels */
+let membersPromise=null;
+function getMembers(force){
+  if(force||!membersPromise)membersPromise=getJSON(MEMBERS_API).catch(e=>{membersPromise=null;throw e});
+  return membersPromise;
+}
+const uniqueMembers=d=>[...new Map([...(d.weekly||[]),...(d.monthly||[]),...(d.all_time||[])].filter(x=>x&&x.username).map(x=>[String(x.username).toLowerCase(),x])).values()];
+
+/* Leadership */
+async function loadLeadership(){
+  const L=[["weshallwin","owner-img","owner-link"],["VolchitsaX","admin-img","admin-link"]];
+for(const[u,img,link]of L){
+    try{const d=await getJSON(`https://api.chess.com/pub/player/${encodeURIComponent(u.toLowerCase())}`);$(img).src=d.avatar||DEFAULT_AVATAR;$(link).href=d.url||`https://www.chess.com/member/${u}`}catch(e){console.warn("Profile lookup failed",u,e)}
+  }
+}
+/* Roadmap + trophies */
+let clubCount=0,page=1,maxPage=1;const BASE=[10,50,100,200,300,500,1000];
+const targetsFor=p=>p===1?BASE:BASE.map(v=>v+(p-1)*1000);
+function renderRoadmap(){
+  const t=targetsFor(page),act=t.findIndex(v=>clubCount<v),fin=act===-1;
+  $("tierLabel").textContent="TIER "+page;
+  const pct=page<maxPage||fin?100:Math.round(act/t.length*100);
+  $("tierFill").style.width=pct+"%";$("progressPct").textContent=pct+"%";
+  $("progressCaption").textContent=page<maxPage?"Previously completed tier":page>maxPage?"Future membership goals":fin?"Tier cleared":`${fmt(clubCount)} members · next: ${fmt(t[act])}`;
+  $("milestoneMap").innerHTML=t.map((v,i)=>{let c="locked",l="LOCKED",s="·";
+    if(page<maxPage||clubCount>=v){c="done";l="COMPLETED";s="✓"}else if(page===maxPage&&i===act){c="active";l="ACTIVE TARGET";s="✦"}
+    return `<div class="stage ${c}"><div class="node">${s}</div><b>${fmt(v)} Members</b><small>${l}</small></div>`}).join("");
+}
+$("prevTier").onclick=()=>{if(page>1){page--;renderRoadmap()}};
+$("nextTier").onclick=()=>{page++;renderRoadmap()};
+const TROPHIES=[[10,"First Circle","The first ten members","♟"],[25,"Rising Banner","Twenty-five members","✦"],[50,"Fifty Strong","A growing clan","♞"],[100,"Century Club","One hundred members","♜"],[250,"Grand Assembly","A quarter thousand","♛"],[500,"Five Hundred","Half a thousand","♕"],[1000,"Thousand Minds","A thousand members","👑"],[2500,"Legendary Clan","Twenty-five hundred","🏆"]];
+function renderTrophies(){$("trophyGrid").innerHTML=TROPHIES.map(([t,n,d,s])=>{const w=clubCount>=t;return `<div class="trophy ${w?"on":""}"><div class="sym">${s}</div><b>${n}</b><small>${d}</small><em>${w?"✦ UNLOCKED":fmt(t)+" MEMBERS"}</em></div>`}).join("")}
+renderTrophies();
+async function updateClub(){
+  try{const d=await getJSON(CLUB_API);clubCount=Number(d.members_count)||0;let p=1;while(clubCount>=BASE[6]+(p-1)*1000)p++;maxPage=p;page=maxPage;
+    $("intelMembers").textContent=clubCount.toLocaleString();renderRoadmap();renderTrophies();
+    const
+pc=Math.min(100,clubCount/1000*100);$("titledFill").style.width=pc+"%";$("titledProgText").textContent=`${Math.round(pc)}% · ${clubCount.toLocaleString()} / 1,000`}
+ catch(e){console.error(e);$("milestoneMap").innerHTML=errBox("Could not load the club profile.",e)}
+}
+/* Player stats (sequential-friendly, lowercase usernames) */
+async function playerData(username,joined){
+const u=encodeURIComponent(String(username).toLowerCase());
+  try{
+    const p=await getJSON(`https://api.chess.com/pub/player/${u}`,2);
+    let best=0,mode="Unrated";
+    try{const s=await getJSON(`https://api.chess.com/pub/player/${u}/stats`,2);
+      for(const[k,l]of[["chess_rapid","Rapid"],["chess_blitz","Blitz"],["chess_bullet","Bullet"],["chess_daily","Daily"]]){const n=s?.[k]?.best?.rating||s?.[k]?.last?.rating||0;if(n>best){best=n;mode=l}}
+    }catch{}
+    return{username:p.username||username,avatar:p.avatar||DEFAULT_AVATAR,best,mode,joined};
+  }catch{return{username,avatar:DEFAULT_AVATAR,best:0,mode:"Unrated",joined}}
+}
+async function inBatches(items,size,fn){const out=[];for(let i=0;i<items.length;i+=size){out.push(...await Promise.all(items.slice(i,i+size).map(fn)))}return out}
+/* Player Observatory + Club Intelligence */
+let directory=[];
+function drawDirectory(){
+  const q=$("directorySearch").value.trim().toLowerCase(),f=$("directoryFilter").value;
+  const rows=directory.filter(x=>(f==="all"||x.sources.includes(f))&&x.username.toLowerCase().includes(q)).slice(0,80);
+  $("directoryCount").textContent=directory.length.toLocaleString()+" RECORDS";
+  $("directoryResults").innerHTML=rows.length?rows.map(x=>`<a class="person" href="https://www.chess.com/member/${encodeURIComponent(x.username)}" target="_blank" rel="noopener"><span class="avatar">${esc(x.username[0].toUpperCase())}</span><span style="min-width:0"><b>${esc(x.username)}</b><small>${x.joined?"Joined "+timeAgo(x.joined):"Member record"} · ${esc(x.sources.join(" / "))}</small></span></a>`).join(""):'<div class="empty" style="grid-column:1/-1">No matching players in the loaded records.</div>';
+}
+async function loadIntel(){
+try{const d=await getMembers(),w=d.weekly||[],m=d.monthly||[],a=d.all_time||[];
+    $("intelWeekly").textContent=w.length.toLocaleString();$("intelMonthly").textContent=m.length.toLocaleString();$("intelAllTime").textContent=a.length.toLocaleString();
+    const map=new Map();
+  for(const[k,arr]of[["weekly",w],["monthly",m],["all-time",a]])for(const it of arr){if(!it||!it.username)continue;const key=String(it.username).toLowerCase();if(!map.has(key))map.set(key,{username:String(it.username),joined:it.joined||0,sources:[]});const r=map.get(key);if((it.joined||0)>r.joined)r.joined=it.joined;if(!r.sources.includes(k))r.sources.push(k)}
+$("intelStatus").textContent="SIGNAL STABLE";$("lastSync").textContent="Synced "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  }catch(e){console.warn(e);$("intelStatus").textContent="SYNC FAILED";$("lastSync").textContent="Tap retry below";$("directoryResults").innerHTML=errBox("The Chess.com member list could not be loaded.",e)}
+}
+$("directorySearch").addEventListener("input",drawDirectory);$("directoryFilter").addEventListener("change",drawDirectory);
+/* Newest members */
+async function loadNewest(){
+  const box=$("membersList");
+  try{const d=await getMembers();const u=uniqueMembers(d).sort((a,b)=>(b.joined||0)-(a.joined||0)).slice(0,3);
+    if(!u.length){box.innerHTML='<div class="empty">The club API returned no member records yet.</div>';return}
+    const rows=await inBatches(u,3,x=>playerData(x.username,x.joined));
+    box.innerHTML=rows.map(m=>`<a class="row" href="https://www.chess.com/member/${encodeURIComponent(m.username)}" target="_blank" rel="noopener"><img src="${esc(m.avatar)}" alt=""><div class="info"><b>${esc(m.username)}</b><small>Joined ${timeAgo(m.joined)}</small></div><span class="rating">${m.best?m.mode+" "+m.best:"Unrated"}</span></a>`).join("")}
+  catch(e){console.error(e);box.innerHTML=errBox("Unable to retrieve newest members.",e)}
+}
+
+/* Titled players: title lists are fetched one at a time to avoid rate limits */
+const TITLES=["GM","IM","FM","CM","NM","WGM","WIM","WFM","WCM"];
+let titleCache=null;
+async function loadTitleSets(){
+  if(titleCache)return titleCache;
+  const sets=[];
+  for(const c of TITLES){try{const d=await getJSON(`https://api.chess.com/pub/titled/${c}`,2);sets.push(new Set((d.players||[]).map(x=>String(x).toLowerCase())))}catch{sets.push(new Set())}}
+  if(sets.every(s=>s.size===0))throw new Error("title lists unavailable");
+  return titleCache=sets;
+}
+async function loadTitled(){
+  const box=$("titledPlayers");
+try{const club=await getMembers();const sets=await loadTitleSets();const found=[];
+    for(const m of uniqueMembers(club)){const i=sets.findIndex(s=>s.has(String(m.username).toLowerCase()));if(i>=0)found.push({username:m.username,title:TITLES[i],joined:m.joined})}
+    $("titledCount").textContent=found.length;
+    if(!found.length){box.innerHTML='<div class="empty">No titled players found in the current club member lists.</div>';return}
+    const players=(await inBatches(found.slice(0,24),4,async x=>({...(await playerData(x.username,x.joined)),title:x.title}))).sort((a,b)=>b.best-a.best);
+    box.innerHTML=players.slice(0,12).map(p=>`<a class="row" href="https://www.chess.com/member/${encodeURIComponent(p.username)}" target="_blank" rel="noopener"><img src="${esc(p.avatar)}" alt=""><div class="info"><span class="badge">${esc(p.title)}</span><b>${esc(p.username)}</b><small>${p.best?`${p.best} · ${p.mode}`:"Rating unavailable"}</small></div></a>`).join("")}
+  catch(e){console.error(e);box.innerHTML=errBox("Titled-player lookup failed.",e)}
+}
+/* Dojo */
+let dDur=900,dRem=900,dInt=null,dRun=false;
+function paintDojo(){const m=Math.floor(dRem/60),s=dRem%60;$("dojoTime").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");$("dojoState").textContent=dRun?"FOCUS SESSION ACTIVE":dRem===0?"SESSION COMPLETE":"READY WHEN YOU ARE";$("dojoStart").textContent=dRun?"Ⅱ PAUSE SESSION":dRem===0?"↻ START AGAIN":"▶ START SESSION"}
+function stopDojo(){clearInterval(dInt);dInt=null;dRun=false;paintDojo()}
+document.querySelectorAll("[data-minutes]").forEach(b=>b.addEventListener("click",()=>{stopDojo();dDur=dRem=Number(b.dataset.minutes)*60;document.querySelectorAll("[data-minutes]").forEach(x=>x.classList.toggle("sel",x===b));paintDojo()}));
+$("dojoStart").addEventListener("click",()=>{if(dRun){stopDojo();return}if(dRem<=0)dRem=dDur;dRun=true;paintDojo();dInt=setInterval(()=>{dRem=Math.max(0,dRem-1);if(!dRem){stopDojo();$("dojoNote").textContent="Session complete. Take a short break and note one thing you learned.";toast("Training session complete. Well played.")}else paintDojo()},1000)});
+$("dojoReset").addEventListener("click",()=>{stopDojo();dRem=dDur;paintDojo();$("dojoNote").textContent="Timer reset. Your next focused session is ready."});
+document.querySelectorAll("[data-task]").forEach(b=>{const k="wsw_task_"+b.dataset.task;try{b.checked=localStorage.getItem(k)==="1"}catch{}b.addEventListener("change",()=>{try{localStorage.setItem(k,b.checked?"1":"0")}catch{}})});paintDojo();
+
+/* Openings */
+const OPENINGS=[["Italian Game","white","Open game · Classical","1. e4 e5 2. Nf3 Nc6 3. Bc4"],["Ruy López","white","Open game · Strategic","1. e4 e5 2. Nf3 Nc6 3. Bb5"],["Queen’s Gambit","white","Closed game · Positional","1. d4 d5 2. c4"],["London System","white","System · Flexible","1. d4 d5 2. Nf3 Nf6 3. Bf4"],["King’s Pawn Game","white","Open game · Classical","1. e4"],["Scotch Game","white","Open game · Direct","1. e4 e5 2. Nf3 Nc6 3. d4"],["English Opening","white","Flank · Flexible","1. c4"],["Sicilian Defence","black","Semi-open · Counterplay","1. e4 c5"],["French Defence","black","Semi-open · Solid","1. e4 e6 2. d4 d5"],["Caro-Kann Defence","black","Semi-open · Resilient","1. e4 c6 2. d4 d5"],["King’s Indian Defence","black","Closed · Dynamic","1. d4 Nf6 2. c4 g6 3. Nc3 Bg7"]];
+function renderOpenings(){
+  const q=$("openingSearch").value.trim().toLowerCase(),sd=$("openingSide").value;
+  const m=OPENINGS.filter(o=>(sd==="all"||o[1]===sd)&&(o[0]+o[2]+o[3]).toLowerCase().includes(q));
+  $("openingList").innerHTML=m.length?m.map(o=>`<div class="opening"><div><b>${esc(o[0])}</b><small>${esc(o[2])} · ${o[1].toUpperCase()}</small></div><div class="line">${esc(o[3])}</div><button type="button" data-
+copy="${esc(o[3])}">COPY MOVES</button></div>`).join(""):'<div class="empty">No matching openings.</div>';
+  document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.copy;navigator.clipboard?.writeText?navigator.clipboard.writeText(v).then(()=>toast("Move line copied.")).catch(()=>toast(v)):toast(v)}));
+}
+$("openingSearch").addEventListener("input",renderOpenings);$("openingSide").addEventListener("change",renderOpenings);renderOpenings();
+/* World clock */
+let loc={name:"Kolkata",country:"India",admin1:"West Bengal",timezone:"Asia/Kolkata"};
+function tick(){const z=loc.timezone||"UTC",n=new Date();$("clockPlace").textContent=`📍 ${loc.name}${loc.country?", "+loc.country:""}`;$("liveClock").textContent=new Intl.DateTimeFormat("en-GB",{timeZone:z,hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}).format(n);$("clockDate").textContent=new Intl.DateTimeFormat("en-US",{timeZone:z,weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(n)+" · "+z}
+setInterval(tick,1000);tick();
+async function searchPlace(){const q=$("placeInput").value.trim();if(!q){toast("Enter a city or country first.");return}
+  try{const d=await getJSON(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=5&language=en&format=json`);if(!d.results?.length){toast("Location not found.");return}loc=d.results[0];tick()}catch{toast("Location search failed.")}}
+$("searchBtn").onclick=searchPlace;$("placeInput").addEventListener("keydown",e=>{if(e.key==="Enter")searchPlace()});
+
+/* Calendar */
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];let cal=new Date(),sel=null;
+function renderCal(){const y=cal.getFullYear(),m=cal.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),t=new Date();$("monthYear").textContent=`${MONTHS[m]} ${y}`;const g=$("calendarGrid");g.innerHTML=["SUN","MON","TUE","WED","THU","FRI","SAT"].map(x=>`<span>${x}</span>`).join("");
+  for(let i=0;i<first;i++)g.appendChild(document.createElement("i"));
+  for(let d=1;d<=days;d++){const b=document.createElement("button");b.type="button";b.className="day";b.textContent=d;if(d===t.getDate()&&m===t.getMonth()&&y===t.getFullYear())b.classList.add("today");const k=`${y}-${m+1}-${d}`;if(sel===k)b.classList.add("sel");b.onclick=()=>{sel=k;renderCal();$("calendarNote").textContent=`Selected training day: ${MONTHS[m]} ${d}, ${y}`};g.appendChild(b)}}
+$("prevMonth").onclick=()=>{cal.setMonth(cal.getMonth()-1);renderCal()};$("nextMonth").onclick=()=>{cal.setMonth(cal.getMonth()+1);renderCal()};renderCal();
+/* Startup + refresh every 5 minutes */
+$("year").textContent=new Date().getFullYear();
+$("todayPill").textContent=new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric"}).format(new Date());
+async function refresh(){
+  getMembers(true).catch(()=>{});          // one shared request
+  updateClub();
+  await Promise.allSettled([loadIntel(),loadNewest()]);
+  loadTitled();
+}
+loadLeadership();refresh();setInterval(refresh,300000);
+</script>
+</body>
+</html>
+
+
+
+
